@@ -3,10 +3,6 @@ import pandas as pd
 from collections import deque, OrderedDict
 from pprint import pprint
 
-###############################
-# FIRST/FOLLOW Functionality  #
-###############################
-
 production_list = []
 t_list = OrderedDict()
 nt_list = OrderedDict()
@@ -95,10 +91,6 @@ def load_grammar(lines):
             else:
                 if symbol not in nt_list:
                     nt_list[symbol] = NonTerminal(symbol)
-
-#################################
-# CLR(1) Parser Construction    #
-#################################
 
 class State:
     _id = 0
@@ -279,12 +271,7 @@ def generate_conflict_counts(table):
                     sr += 1
                 elif r > 0:
                     rr += 1
-        # (Cells with a single action need no conflict resolution)
     return sr, rr
-
-##########################
-# Streamlit App Interface#
-##########################
 
 st.title("CLR(1) Parser Generator")
 
@@ -300,10 +287,8 @@ if st.button("Generate CLR(1) Parser"):
     if grammar_input.strip() == "":
         st.error("Please enter grammar productions.")
     else:
-        # Reset globals and load the grammar
         lines = grammar_input.splitlines()
         load_grammar(lines)
-        # Compute FIRST and FOLLOW for each non-terminal
         ff_data = []
         for nt in nt_list:
             compute_first(nt)
@@ -316,15 +301,13 @@ if st.button("Generate CLR(1) Parser"):
         st.subheader("FIRST and FOLLOW")
         st.table(pd.DataFrame(ff_data))
         
-        # Augment grammar and list the symbols
         augment_grammar()
         nt_keys = list(nt_list.keys())
         t_keys = list(t_list.keys()) + ['$']
         st.markdown(f"**Non-Terminals:** `{', '.join(nt_keys)}`")
         st.markdown(f"**Terminals:** `{', '.join(t_keys)}`")
         
-        # Compute LR(0) items (states)
-        State._id = 0  # Reset state numbering
+        State._id = 0 
         states = calc_states()
         items_lines = []
         for idx, state in enumerate(states):
@@ -334,11 +317,9 @@ if st.button("Generate CLR(1) Parser"):
         st.subheader("LR(0) Items")
         st.code("\n".join(items_lines))
         
-        # Generate the CLR(1) parsing table
         table = make_table(states)
         st.subheader("CLR(1) Parsing Table")
         header = nt_keys + t_keys
-        # Prepare table data: rows as states, columns as symbols
         table_rows = []
         for state_no, row in table.items():
             row_dict = {"State": state_no}
@@ -352,8 +333,7 @@ if st.button("Generate CLR(1) Parser"):
             table_rows.append(row_dict)
         df_table = pd.DataFrame(table_rows).set_index("State")
         st.table(df_table)
-        
-        # Display conflict summary
+
         sr, rr = generate_conflict_counts(table)
         st.subheader("Conflict Summary")
         st.markdown(f"- **s/r conflicts:** {sr}")
