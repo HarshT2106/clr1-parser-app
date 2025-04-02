@@ -10,3 +10,5 @@ Features
 5) Detects Shift/Reduce (s/r) and Reduce/Reduce (r/r) conflicts
 6) Validates if the input grammar is CLR(1) Compliant
 7) Supports ε (epsilon) productions and end marker ($)
+
+LINK : https://clr1-parser-app-d9352zbng9v7skqdkmi5uk.streamlit.app/
