@@ -1,4 +1,4 @@
-# CLR(1)-parser-app
+# CLR(1) - parser-app
 CLR(1) Parser Generator
 A powerful CLR(1) Parser Generator that constructs LR(0) Items, computes FIRST/FOLLOW sets, and generates the CLR(1) Parsing Table with conflict detection for Shift/Reduce (s/r) and Reduce/Reduce (r/r) conflicts. Built using Streamlit for a seamless and interactive experience.
 
